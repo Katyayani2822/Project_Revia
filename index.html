@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Revia - AI Recipe & Donation Platform</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css"> 
+
+    <script>
+        // Inline Tailwind Configuration (Kept here for ease of use with CDN)
+        tailwind.config = {
+            darkMode: 'class', 
+            theme: {
+                extend: {
+                    colors: {
+                        'revia-green': '#10b981',
+                        'revia-dark': '#047857',
+                        'revia-light': '#f0fdf4',
+                        'dark-bg': '#0f172a', /* slate-900 */
+                        'dark-card': '#1e293b', /* slate-800 */
+                        'dark-text': '#f1f5f9', /* slate-100 */
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-revia-light dark:bg-dark-bg min-h-screen flex flex-col transition-colors duration-300">
+
+    <header class="bg-white dark:bg-dark-card shadow-xl sticky top-0 z-20 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#home" class="flex items-center space-x-2">
+                <svg class="w-7 h-7 text-revia-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.018 21H7.982a2 2 0 01-1.954-1.106l-3.5-7a2 2 0 011.79-2.894H10M20 17l-2.071-2.071M14 10l-2 2m0 0l-2-2m2 2V3" />
+                </svg>
+                <span class="text-3xl font-extrabold text-gray-800 dark:text-dark-text">Revia</span>
+            </a>
+            
+            <div class="flex items-center space-x-4">
+                <nav class="hidden md:flex space-x-6 text-gray-600 dark:text-gray-300 font-medium">
+                    <a id="nav-home" href="#home" class="nav-link hover:text-revia-green transition duration-150">Home</a>
+                    <a id="nav-demo" href="#demo" class="nav-link hover:text-revia-green transition duration-150">Recipe & Donate</a>
+                    <a id="nav-donations" href="#donations" class="nav-link hover:text-revia-green transition duration-150">Active Donations</a>
+                    <a id="nav-guide" href="#guide" class="nav-link hover:text-revia-green transition duration-150">Guide</a>
+                </nav>
+
+                <button id="auth-status" class="text-xs font-semibold px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-500 dark:text-gray-400 transition-colors duration-300">AI Active</button>
+
+                <button id="theme-toggle" class="p-2 rounded-full text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 shadow-md">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+        
+        <div id="status-message" class="fixed top-20 right-4 p-4 rounded-xl hidden text-center max-w-xs w-full text-white font-medium shadow-xl z-30 transition-all duration-300"></div>
+
+        <section id="view-home" class="page-content hidden flex-col items-center py-12 md:py-20 mx-auto">
+            <div class="text-center space-y-6">
+                <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full bg-revia-light text-revia-dark border border-revia-dark/20 dark:bg-dark-card dark:text-revia-green">
+                    Powered by Gemini AI
+                </span>
+                <h1 class="text-5xl sm:text-6xl font-extrabold text-gray-800 dark:text-dark-text mb-4 leading-tight">
+                    Minimize Waste, <span class="text-revia-green">Maximize Impact</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto">
+                    Revia helps you combat food waste by instantly turning your surplus ingredients into custom recipes or connecting them to local donation networks.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 w-full max-w-5xl">
+                <a href="#demo" class="group bg-white dark:bg-dark-card p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-revia-green/50 hover:border-revia-green">
+                    <svg class="w-10 h-10 text-revia-green mb-3 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.218A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.218A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-dark-text mb-2">1. Analyze</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Upload a single photo of your fridge contents or pantry items for AI detection.</p>
+                </a>
+                <a href="#demo" class="group bg-white dark:bg-dark-card p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-blue-500/50 hover:border-blue-500">
+                    <svg class="w-10 h-10 text-blue-500 mb-3 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-dark-text mb-2">2. Create</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Generate the Top 5 recipes using only the detected ingredients you select.</p>
+                </a>
+                <a href="#donations" class="group bg-white dark:bg-dark-card p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-yellow-500/50 hover:border-yellow-500">
+                    <svg class="w-10 h-10 text-yellow-500 mb-3 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-dark-text mb-2">3. Donate</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Easily schedule a pickup for surplus, unspoiled food items to local charities.</p>
+                </a>
+            </div>
+            <a href="#demo" class="mt-12 px-10 py-4 text-lg font-bold rounded-full text-white revia-green-btn shadow-xl dark:shadow-revia-dark/50">
+                Start Cooking or Donating
+            </a>
+        </section>
+
+        <section id="view-demo" class="page-content hidden flex-col items-center py-12 md:py-20 mx-auto">
+            <h1 class="text-4xl font-extrabold text-gray-800 dark:text-dark-text mb-10 text-center">
+                The Revia Workflow
+            </h1>
+
+            <div class="w-full max-w-3xl bg-white dark:bg-dark-card p-6 sm:p-8 rounded-2xl shadow-2xl transition-all duration-300">
+                
+                <div id="upload-view" class="flex flex-col items-center space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-700 dark:text-dark-text w-full pb-2 border-b dark:border-gray-700">Step 1: Upload or Manually Enter Food</h2>
+                    
+                    <div class="w-full max-w-sm flex flex-col items-center space-y-4 mx-auto">
+                        <div id="image-preview-container" class="w-full h-40 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 overflow-hidden transition-all duration-300">
+                            <svg class="w-10 h-10 mb-2 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span id="preview-text" class="text-center px-4 text-sm">Upload a clear photo</span>
+                            <img id="image-preview" class="hidden w-full h-full object-cover" alt="Food preview"/>
+                        </div>
+                        
+                        <div class="file-input-wrapper flex space-x-4 w-full">
+                            <button type="button" class="cursor-pointer flex-grow inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white revia-green-btn">
+                                Upload Image
+                            </button>
+                            <input type="file" id="food-image-input" accept="image/*" class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer">
+                        </div>
+                        <button id="process-image-btn" class="hidden w-full px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-blue-500 hover:bg-blue-600 transition duration-200 transform hover:scale-[1.02]">
+                            Analyze Ingredients from Image
+                        </button>
+                    </div>
+
+                    <div class="flex items-center w-full max-w-sm my-4">
+                        <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                        <span class="flex-shrink mx-4 text-sm text-gray-500 dark:text-gray-400 font-bold">OR LIST MANUALLY</span>
+                        <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                    </div>
+
+                    <div id="manual-input-group" class="w-full max-w-sm space-y-4 mx-auto">
+                        <textarea id="manual-ingredients-input" rows="3" placeholder="Enter ingredients here, separated by commas (e.g., chicken, onion, flour)"
+                            class="w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-revia-green focus:ring-revia-green p-3 border bg-white dark:bg-gray-900 dark:text-dark-text text-sm"></textarea>
+                        
+                        <button id="process-manual-btn" class="w-full px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-md text-white bg-yellow-500 hover:bg-yellow-600 transition duration-200 transform hover:scale-[1.02]">
+                            Process Manual List
+                        </button>
+                    </div>
+
+                </div>
+
+                <div id="results-view" class="hidden flex-col space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-700 dark:text-dark-text w-full pb-2 border-b dark:border-gray-700">Step 2: Decide What's Next</h2>
+                    
+                    <div class="bg-revia-light dark:bg-gray-700 p-4 rounded-xl border border-revia-green/30 dark:border-gray-600 shadow-inner">
+                        <h3 class="font-bold text-lg text-gray-700 dark:text-dark-text mb-3 flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-revia-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2m-9 0V3h2m-2 2h4m-4 4h4m-4 8h4m-4-4h4"></path></svg>
+                            <span>Detected Ingredients: Select what you want to cook with</span>
+                        </h3>
+                        <div id="detected-ingredients-list" class="grid grid-cols-2 md:grid-cols-3 gap-3 text-gray-700 dark:text-gray-300">
+                            <p class="text-sm italic col-span-2">Ingredients will appear here after analysis.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <button id="generate-recipe-btn" disabled class="p-4 rounded-xl text-white font-bold bg-blue-500/70 dark:bg-blue-600/70 cursor-not-allowed shadow-lg transition duration-200 flex items-center justify-center space-x-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>Generate Top 5 Recipes</span>
+                        </button>
+                        <button id="donate-food-btn" class="p-4 rounded-xl text-white font-bold revia-green-btn shadow-lg flex items-center justify-center space-x-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            <span>Donate Food</span>
+                        </button>
+                    </div>
+                    <button id="reset-btn" class="text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 transition duration-150">
+                        Start Over / Upload New Image
+                    </button>
+                </div>
+
+                <div id="recipe-display" class="hidden mt-12 space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-dark-text border-b dark:border-gray-700 pb-3 mb-6">✨ Top 5 Recipe Suggestions</h2>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-donations" class="page-content hidden flex-col items-center py-12 mx-auto">
+            <h1 class="text-4xl font-extrabold text-gray-800 dark:text-dark-text mb-6 text-center">🌎 Active Donation Requests</h1>
+            <p class="text-center text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8">
+                View food items that have been made available for local pickup by community partners or food banks.
+            </p>
+
+            <div class="flex justify-center mb-6 w-full max-w-5xl mx-auto">
+                <button id="manual-donate-trigger-btn" class="px-6 py-3 text-base font-bold rounded-full text-white bg-yellow-500 hover:bg-yellow-600 transition duration-200 shadow-md transform hover:scale-[1.02]">
+                    + Manually List & Donate Items
+                </button>
+            </div>
+
+            <div class="overflow-x-auto bg-white dark:bg-dark-card p-4 rounded-2xl shadow-xl max-w-5xl mx-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Donor ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Items & Quantity</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Mock Location</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="donation-list" class="bg-white dark:bg-dark-card divide-y divide-gray-200 dark:divide-gray-700">
+                        <tr>
+                            <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 dark:text-gray-400">
+                                Loading mock donation data...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="view-guide" class="page-content hidden flex-col items-center py-12 mx-auto">
+            <h1 class="text-4xl font-extrabold text-gray-800 dark:text-dark-text mb-6 text-center">💡 Guide & Reference Data</h1>
+            <p class="text-center text-gray-600 dark:text-gray-400 max-w-4xl mx-auto mb-10">
+                Understand how Revia uses advanced AI and what kinds of images yield the most accurate results for cooking and donating.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-xl space-y-4">
+                    <h2 class="text-2xl font-bold text-revia-dark dark:text-revia-green border-b pb-2">How AI Detection Works</h2>
+                    <ul class="space-y-3 text-gray-700 dark:text-gray-300 list-disc list-inside pl-4">
+                        <li>**Multimodal Analysis:** We use the Gemini model (`gemini-2.5-flash`) to simultaneously analyze the image (pixels) and the prompt (text instruction).</li>
+                        <li>**Image Quality is Key:** Clear, well-lit photos with minimal clutter result in 95%+ detection accuracy. Avoid blurry or dark images.</li>
+                        <li>**Focus on Raw Ingredients:** The AI is trained to identify raw produce, packaged goods, and unprocessed meats. It may struggle with complex, pre-cooked dishes.</li>
+                        <li>**Structured Output:** The model is constrained to output a clean, comma-separated list to ensure predictable parsing for the ingredient checklist.</li>
+                    </ul>
+                </div>
+                <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-xl space-y-4">
+                    <h2 class="text-2xl font-bold text-revia-dark dark:text-revia-green border-b pb-2">Optimal Imaging Tips</h2>
+                    <div class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <p class="font-semibold text-gray-800 dark:text-dark-text">Example of a Good Photo:</p>
+                        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border dark:border-gray-600">
+                            <p class="text-sm italic">"A dozen eggs, three ripe tomatoes, a head of lettuce, and a half-loaf of sandwich bread scattered on a wooden cutting board."</p>
+                            <p class="text-xs mt-2 text-revia-green">Outcome: High accuracy for recipe or donation scheduling.</p>
+                        </div>
+                        <p class="font-semibold text-gray-800 dark:text-dark-text">Example of a Poor Photo:</p>
+                        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border dark:border-gray-600">
+                            <p class="text-sm italic">"A blurry picture of a partially-eaten casserole dish taken in low kitchen light."</p>
+                            <p class="text-xs mt-2 text-red-500">Outcome: Low or no detection, high chance of error.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="donation-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center p-4" aria-modal="true">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-lg shadow-2xl space-y-4 transition-colors duration-300">
+            <h3 class="text-2xl font-bold text-revia-dark dark:text-revia-green">Confirm Donation (Detected Items)</h3>
+            <p class="text-gray-600 dark:text-gray-300">You are donating *all* detected items to ensure maximum impact:</p>
+            <p id="modal-food-items" class="font-mono text-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-200 p-3 rounded-lg"></p>
+
+            <form id="donation-form" class="space-y-4">
+                <div>
+                    <label for="quantity-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Approx. Quantity (e.g., 5 lbs, Large Box)</label>
+                    <input type="text" id="quantity-input" required class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-revia-green focus:ring-revia-green p-2 border bg-white dark:bg-gray-900 dark:text-dark-text">
+                </div>
+                <div>
+                    <label for="location-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Mock Location (e.g., City, State)</label>
+                    <input type="text" id="location-input" required value="San Francisco, CA" class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-revia-green focus:ring-revia-green p-2 border bg-white dark:bg-gray-900 dark:text-dark-text">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancel-donation-btn" class="px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 text-sm font-medium rounded-full text-white revia-green-btn shadow-md">
+                        Confirm & Schedule Pickup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="manual-donation-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center p-4" aria-modal="true">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-lg shadow-2xl space-y-4 transition-colors duration-300">
+            <h3 class="text-2xl font-bold text-revia-dark dark:text-revia-green">Manual Donation Entry</h3>
+            <p class="text-gray-600 dark:text-gray-300">Please list all items you wish to donate, separated by commas.</p>
+
+            <form id="manual-donation-form" class="space-y-4">
+                <div>
+                    <label for="manual-items-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Items to Donate (Comma Separated)</label>
+                    <textarea id="manual-items-input" rows="2" required placeholder="e.g., milk, flour, canned soup" class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-revia-green focus:ring-revia-green p-2 border bg-white dark:bg-gray-900 dark:text-dark-text"></textarea>
+                </div>
+                <div>
+                    <label for="manual-quantity-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Approx. Quantity (e.g., 5 lbs, Large Box)</label>
+                    <input type="text" id="manual-quantity-input" required class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-revia-green focus:ring-revia-green p-2 border bg-white dark:bg-gray-900 dark:text-dark-text">
+                </div>
+                <div>
+                    <label for="manual-location-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Mock Location (e.g., City, State)</label>
+                    <input type="text" id="manual-location-input" required value="San Francisco, CA" class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-revia-green focus:ring-revia-green p-2 border bg-white dark:bg-gray-900 dark:text-dark-text">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" id="cancel-manual-donation-btn" class="px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 text-sm font-medium rounded-full text-white revia-green-btn shadow-md">
+                        Confirm & Schedule Pickup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <footer class="bg-white dark:bg-dark-card mt-12 border-t border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+            &copy; 2025 Revia Platform. Built with Gemini AI. <br> Food waste is a serious problem—let's solve it together.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
